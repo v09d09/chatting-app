@@ -3,10 +3,10 @@ import React from "react";
 function ChatBox() {
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
-      <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500">
+      <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold">
         #RoomName - Users
       </div>
-      <div className=" absolute top-12 bottom-12 py-4  px-8 overflow-scroll scrollbar-hide">
+      <div className=" absolute top-12 bottom-24 py-4  px-8 overflow-scroll scrollbar-hide">
         Chat
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
@@ -682,8 +682,8 @@ function ChatBox() {
           quisquam molestias laudantium deleniti quos.
         </p>
       </div>
-      <div className=" absolute h-12 w-full bottom-0 p-2 border-t border-slate-500">
-        Input box
+      <div className=" absolute  h-24 w-full bottom-0 p-2 border-t border-slate-500 font-bold">
+        Input box : Tis a message from jenny,,
       </div>
     </div>
   );
