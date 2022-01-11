@@ -1,5 +1,6 @@
 import React from "react";
 import ChatMsg from "./ChatMsg";
+import SendMsgForm from "./SendMsgForm";
 
 function ChatBox() {
   // const colors = ["blue", "purble", "cyan", "pink", "red", "green", "yellow"];
@@ -11,7 +12,7 @@ function ChatBox() {
   // }, []);
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
-      <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold">
+      <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold text-lg">
         #RoomName - Users
       </div>
       <div className=" absolute top-12 bottom-24 py-4  px-8 overflow-scroll scrollbar-hide">
@@ -19,7 +20,7 @@ function ChatBox() {
         <ChatMsg />
       </div>
       <div className=" absolute  h-24 w-full bottom-0 p-2 border-t border-slate-500 font-bold">
-        Input box : Tis a message from jenny,,
+        <SendMsgForm />
       </div>
     </div>
   );
