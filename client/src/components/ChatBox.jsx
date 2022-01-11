@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 import ChatMsg from "./ChatMsg";
 import SendMsgForm from "./SendMsgForm";
 
 function ChatBox() {
+  const socket = useRef();
+  useEffect(() => {
+    socket.current = io("http://localhost:8000");
+  }, []);
   // const colors = ["blue", "purble", "cyan", "pink", "red", "green", "yellow"];
   // // const [idx, setIdx] = useState(0);
   // const [userColor, setUserColor] = useState("");
