@@ -5,8 +5,9 @@ import SendMsgForm from "./SendMsgForm";
 
 function ChatBox() {
   const socket = useRef();
+  const SOCKETENDPOINT = "http://localhost:8000";
   useEffect(() => {
-    socket.current = io("http://localhost:8000");
+    socket.current = io(SOCKETENDPOINT);
   }, []);
   // const colors = ["blue", "purble", "cyan", "pink", "red", "green", "yellow"];
   // // const [idx, setIdx] = useState(0);
