@@ -9,3 +9,6 @@ body {
   font-family: "Anonymous Pro";
   font-weight: 400;
 }
+#root {
+  height: 100%;
+}

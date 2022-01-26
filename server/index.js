@@ -14,8 +14,11 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+app.use(cors());
+
 io.on("connection", (socket) => {
   console.log("yo we got a connection");
+  //listen to incoming messages and forward these messages to every one in the room
 });
 
 const PORT = process.env.PORT || 8000;

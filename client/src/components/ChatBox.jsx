@@ -1,20 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+// import React, { useEffect, useRef } from "react";
+// import { io } from "socket.io-client";
 import ChatMsg from "./ChatMsg";
 import SendMsgForm from "./SendMsgForm";
 
 function ChatBox() {
-  const socket = useRef();
-  const SOCKETENDPOINT = "http://localhost:8000";
-  useEffect(() => {
-    socket.current = io(SOCKETENDPOINT);
-  }, []);
-  // const colors = ["blue", "purble", "cyan", "pink", "red", "green", "yellow"];
-  // // const [idx, setIdx] = useState(0);
-  // const [userColor, setUserColor] = useState("");
+  // const socket = useRef();
+  // const SOCKETENDPOINT = "http://localhost:8000";
   // useEffect(() => {
-  //   const idx = Math.floor(Math.random() * colors.length);
-  //   setUserColor(`text-${colors[idx]}-500`);
+  //   socket.current = io(SOCKETENDPOINT);
   // }, []);
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">

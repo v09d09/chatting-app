@@ -1,12 +1,16 @@
-import ChatBox from "./components/ChatBox";
-import ChannelsSideBar from "./components/ChannelsSideBar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Main from "./pages/Main";
+import Error from "./pages/Error";
 function App() {
   return (
-    <div className="flex h-screen ">
-      <ChannelsSideBar className="w-80" />
-      <ChatBox />
-      <div className="w-80"></div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </Router>
   );
 }
 
