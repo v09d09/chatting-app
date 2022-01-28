@@ -3,7 +3,7 @@
 import ChatMsg from "./ChatMsg";
 import SendMsgForm from "./SendMsgForm";
 
-function ChatBox() {
+function ChatBox({ ch }) {
   // const socket = useRef();
   // const SOCKETENDPOINT = "http://localhost:8000";
   // useEffect(() => {
@@ -12,7 +12,7 @@ function ChatBox() {
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
       <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold text-lg">
-        #RoomName - Users
+        #{ch} - Users
       </div>
       <div className=" absolute top-12 bottom-24 py-4  px-8 overflow-scroll scrollbar-hide">
         <ChatMsg />

@@ -25,15 +25,17 @@ function LoginForm() {
       setInvalidUsername(false);
       setUsername(inputRef.current.value);
       inputRef.current.value = "";
-      navigate("/", { replace: true });
+      navigate("/ch/general", { replace: true });
     } else {
       setInvalidUsername(true);
     }
   };
 
+  const headerMsg = username ? "change username!" : "login as guest!";
+
   return (
     <Card className="border w-96 h-96 p-5 flex justify-between flex-col">
-      <h1 className="text-2xl font-bold mt-10">login as guest!</h1>
+      <h1 className="text-2xl font-bold mt-10">{headerMsg}</h1>
 
       <form className="w-full mb-10" onSubmit={loginSubmitHandler}>
         <label htmlFor="user-name" className="text-xl my-2 opacity-80">

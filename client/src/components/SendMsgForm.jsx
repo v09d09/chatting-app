@@ -1,9 +1,16 @@
 import React from "react";
 
 function SendMsgForm() {
+  const sendMsgHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="w-full h-full">
-      <form className="w-full h-full flex justify-center items-center">
+      <form
+        className="w-full h-full flex justify-center items-center"
+        onSubmit={sendMsgHandler}
+      >
         <input
           type="text"
           placeholder="Send a Message..."
