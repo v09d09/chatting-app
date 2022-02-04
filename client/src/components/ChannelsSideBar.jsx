@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function ChannelsSideBar(props) {
   return (
     <div className={props.className}>
@@ -13,16 +15,16 @@ function ChannelsSideBar(props) {
       <div className="px-4 py-2">
         <ul>
           <li>
-            <a href="#">general</a>
+            <NavLink to="/ch/general">general</NavLink>
           </li>
           <li>
-            <a href="#">gaming</a>
+            <NavLink to="/ch/gaming">gaming</NavLink>
           </li>
           <li>
-            <a href="#">cats</a>
+            <NavLink to="/ch/cats">cats</NavLink>
           </li>
           <li>
-            <a href="#">dev</a>
+            <NavLink to="/ch/dev">dev</NavLink>
           </li>
         </ul>
       </div>

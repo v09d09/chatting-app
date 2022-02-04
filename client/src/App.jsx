@@ -9,16 +9,23 @@ import Main from "./pages/Main";
 import Error from "./pages/Error";
 import ChatBox from "./components/ChatBox";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { SocketProvider } from "./context/SocketProvider";
 function App() {
   const [username, setUsername] = useLocalStorage("username");
   const redirect = username ? "/ch/general" : "/login";
-  console.log(username);
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate replace to={redirect} />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/ch" element={<Main />}>
+        <Route
+          path="/ch"
+          element={
+            <SocketProvider id={username}>
+              <Main />
+            </SocketProvider>
+          }
+        >
           <Route path="general" element={<ChatBox ch="general" />} />
           <Route path="gaming" element={<ChatBox ch="gaming" />} />
           <Route path="cats" element={<ChatBox ch="cats" />} />

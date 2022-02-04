@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import ChannelsSideBar from "../components/ChannelsSideBar";
+
 import useLocalStorage from "../hooks/useLocalStorage";
 
 function Main() {
   const [username, setUsername] = useLocalStorage("username");
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!username) {
       navigate("/login", { replace: true });
@@ -17,7 +17,7 @@ function Main() {
     ) {
       navigate("/ch/general");
     }
-  }, []);
+  }, [username, navigate]);
 
   return (
     <div className="flex h-screen ">

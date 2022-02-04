@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
-app.use(cors);
+// const cors = require("cors");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -10,11 +9,9 @@ const io = new Server(server, {
     origin: "*",
   },
 });
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
-app.use(cors());
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config();
+// }
 
 io.on("connection", (socket) => {
   console.log("yo we got a connection");

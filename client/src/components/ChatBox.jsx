@@ -1,14 +1,18 @@
-// import React, { useEffect, useRef } from "react";
-// import { io } from "socket.io-client";
 import ChatMsg from "./ChatMsg";
 import SendMsgForm from "./SendMsgForm";
-
+import { useSocket } from "../context/SocketProvider";
+import { useEffect } from "react";
 function ChatBox({ ch }) {
-  // const socket = useRef();
-  // const SOCKETENDPOINT = "http://localhost:8000";
-  // useEffect(() => {
-  //   socket.current = io(SOCKETENDPOINT);
-  // }, []);
+  const socket = useSocket();
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("connected to server");
+      });
+    } else {
+      console.log("yo");
+    }
+  }, [socket]);
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
       <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold text-lg">
