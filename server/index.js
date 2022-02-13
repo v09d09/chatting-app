@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-// const cors = require("cors");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -9,13 +8,36 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+const { addUser, removeUser, getUser } = require("./users");
+
 // if (process.env.NODE_ENV !== "production") {
 //   require("dotenv").config();
 // }
 
 io.on("connection", (socket) => {
-  console.log("yo we got a connection");
-  //listen to incoming messages and forward these messages to every one in the room
+  console.log(socket.id + " connected!");
+
+  socket.on("details", (userInfo) => {
+    addUser({ ...userInfo, sid: socket.id });
+    socket.join(userInfo.room); //??
+  });
+
+  socket.on("message", (msg) => {
+    console.log(msg);
+    const user = getUser(socket.id);
+    console.log("GETUSEROUTPUT: ", user);
+    if (user) {
+      socket.broadcast
+        .to(user.room)
+        .emit("message", { content: msg, username: user.username });
+    } else {
+      console.log("Error user not found");
+    }
+  });
+  socket.on("disconnect", (reason) => {
+    console.log(reason);
+    removeUser(socket.id);
+  });
 });
 
 const PORT = process.env.PORT || 8000;

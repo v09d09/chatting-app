@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSocket } from "../context/SocketProvider";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-function SendMsgForm() {
+function SendMsgForm({ setMessages }) {
+  const socket = useSocket();
+  const [username, SetUsername] = useLocalStorage("username");
+  const [message, setMessage] = useState("");
+
   const sendMsgHandler = (e) => {
     e.preventDefault();
+    if (socket) {
+      socket.emit("message", message);
+    } else {
+      console.log("Error connecting to server.");
+    }
+    setMessages((prev) => [...prev, { username, content: message }]);
+    setMessage("");
   };
 
   return (
@@ -14,6 +27,8 @@ function SendMsgForm() {
         <input
           type="text"
           placeholder="Send a Message..."
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
           className="bg-transparent border  w-4/5 h-3/5 px-4"
         />
         <input
