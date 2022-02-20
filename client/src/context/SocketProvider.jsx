@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
+import { useAuth } from "./authProvider";
 const CONNECTION_STRING = "http://localhost:8000";
 
 const SocketContext = React.createContext();
@@ -8,15 +9,20 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 
-export function SocketProvider({ id, children }) {
+export function SocketProvider({ children }) {
   const [socket, setSocket] = useState();
+  const [user] = useAuth();
 
   useEffect(() => {
-    const newSocket = io(CONNECTION_STRING, { query: { id } });
+    // const socketOptions = { //THIS WORKS
+    //   auth: { token: user?.token },
+    // };
+    const socketOptions = { withCredentials: true };
+    const newSocket = io(CONNECTION_STRING, socketOptions);
     setSocket(newSocket);
 
     return () => newSocket.close();
-  }, [id]);
+  }, [user]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

@@ -5,7 +5,7 @@ function addUser(user) {
   const userIdx = USERS.findIndex((u) => u.username === username);
   if (userIdx === -1) {
     USERS.push(user);
-    console.log("added user: ", user);
+    // console.log("added user: ", user);
   } else {
     if (sid === USERS[userIdx].sid) {
       console.log("user already in USERS arr? do nothing?");
@@ -18,12 +18,19 @@ function addUser(user) {
 function getUser(userSid) {
   return USERS.find((u) => u.sid === userSid);
 }
+function findUser(username) {
+  const user = USERS.findIndex((u) => u.username === username);
+  if (user !== -1) return USERS[user];
+  else return null;
+}
 
 function removeUser(userSid) {
   USERS.filter((u) => u.sid === userSid);
-  console.log("removed user: ", userSid);
+  // console.log("removed user: ", userSid);
 }
 
 exports.addUser = addUser;
 exports.removeUser = removeUser;
 exports.getUser = getUser;
+exports.findUser = findUser;
+exports.USERS = USERS;

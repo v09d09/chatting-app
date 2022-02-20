@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/authProvider";
 import { useSocket } from "../context/SocketProvider";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 function SendMsgForm({ setMessages }) {
   const socket = useSocket();
-  const [username, SetUsername] = useLocalStorage("username");
+  const [user] = useAuth();
+  const username = user?.uid?.split("#")[0];
   const [message, setMessage] = useState("");
 
   const sendMsgHandler = (e) => {

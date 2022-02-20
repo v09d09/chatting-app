@@ -2,12 +2,17 @@ import ChatMsg from "./ChatMsg";
 import SendMsgForm from "./SendMsgForm";
 import { useSocket } from "../context/SocketProvider";
 import { useEffect, useState } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useAuth } from "../context/authProvider";
+// import useLocalStorage from "../hooks/useLocalStorage";
 
 function ChatBox({ ch }) {
-  const [username, SetUsername] = useLocalStorage("username");
+  // const [username, SetUsername] = useLocalStorage("username");
+
+  const [user] = useAuth();
   const [messages, setMessages] = useState([]);
   const socket = useSocket();
+
+  const username = user?.uid?.split("#")[0];
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => {

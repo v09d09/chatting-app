@@ -8,11 +8,12 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Error from "./pages/Error";
 import ChatBox from "./components/ChatBox";
-import useLocalStorage from "./hooks/useLocalStorage";
 import { SocketProvider } from "./context/SocketProvider";
+import { useAuth } from "./context/authProvider";
 function App() {
-  const [username, setUsername] = useLocalStorage("username");
-  const redirect = username ? "/ch/general" : "/login";
+  const [user] = useAuth();
+  if (!user) return <div>Loading...</div>; // make a spinny thing here
+  const redirect = user.uid ? "/ch/general" : "/login";
   return (
     <Router>
       <Routes>
@@ -21,7 +22,7 @@ function App() {
         <Route
           path="/ch"
           element={
-            <SocketProvider id={username}>
+            <SocketProvider>
               <Main />
             </SocketProvider>
           }
