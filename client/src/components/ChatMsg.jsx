@@ -1,6 +1,7 @@
 import React from "react";
 
-function ChatMsg({ username, message }) {
+function ChatMsg({ uid, message }) {
+  const username = uid?.split("#")[0];
   return (
     <div className="w-full text-sm">
       <span className="text-red-500">{username}</span>

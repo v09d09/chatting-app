@@ -3,47 +3,45 @@ import SendMsgForm from "./SendMsgForm";
 import { useSocket } from "../context/SocketProvider";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/authProvider";
-// import useLocalStorage from "../hooks/useLocalStorage";
 
 function ChatBox({ ch }) {
-  // const [username, SetUsername] = useLocalStorage("username");
-
   const [user] = useAuth();
-  const [messages, setMessages] = useState([]);
   const socket = useSocket();
+  const [messages, setMessages] = useState({});
 
-  const username = user?.uid?.split("#")[0];
   useEffect(() => {
     if (socket) {
-      socket.on("connect", () => {
-        console.log("connected as: ", socket.id);
-      });
-
-      socket.emit("details", { username, channel: ch });
-
+      // socket.on("connect", () => {
+      //   console.log("connected as: ", socket.id);
+      // });
+      socket.emit("joinRoom", { uid: user?.uid, channel: ch });
       socket.on("message", (msg) => {
-        console.log("haha i receive msg", msg);
-        setMessages((prev) => [...prev, msg]);
+        setMessages((prev) => {
+          if (prev[ch]) {
+            return { ...prev, [ch]: [...prev[ch], msg] };
+          } else if (prev) {
+            return { ...prev, [ch]: [msg] };
+          } else {
+            return { [ch]: [msg] };
+          }
+        });
       });
     } else {
       console.log("Error connecting to server.");
     }
-  }, [socket, ch, username]);
-
+  }, [socket, ch, user]);
   return (
     <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
       <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold text-lg">
-        #{ch} - Users
+        #{ch}
       </div>
       <div className=" absolute top-12 bottom-24 py-4  px-8 overflow-scroll scrollbar-hide">
-        {messages.map((msg, idx) => {
-          return (
-            <ChatMsg key={idx} username={msg.username} message={msg.content} />
-          );
+        {messages[ch]?.map((msg, idx) => {
+          return <ChatMsg key={idx} uid={msg.uid} message={msg.content} />;
         })}
       </div>
       <div className=" absolute  h-24 w-full bottom-0 p-2 border-t border-slate-500 font-bold">
-        <SendMsgForm setMessages={setMessages} />
+        <SendMsgForm setMessages={setMessages} ch={ch} />
       </div>
     </div>
   );

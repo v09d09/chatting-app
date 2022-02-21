@@ -1,7 +1,6 @@
 // add secure to cookie config on production
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { addUser } = require("../users");
 const router = express.Router();
 
 router.get("/", gGetInfoController);
@@ -39,7 +38,6 @@ function gLoginController(req, res) {
 
   const uid = username + `#${randInt(1000000, 9999999)}`;
   const token = jwt.sign({ uid }, process.env.JWT_SECRET, { expiresIn: "1d" });
-  addUser({ username, uid });
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000),

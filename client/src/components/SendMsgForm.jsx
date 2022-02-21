@@ -2,20 +2,31 @@ import React, { useState } from "react";
 import { useAuth } from "../context/authProvider";
 import { useSocket } from "../context/SocketProvider";
 
-function SendMsgForm({ setMessages }) {
+function SendMsgForm({ setMessages, ch }) {
   const socket = useSocket();
   const [user] = useAuth();
-  const username = user?.uid?.split("#")[0];
   const [message, setMessage] = useState("");
 
   const sendMsgHandler = (e) => {
     e.preventDefault();
     if (socket) {
-      socket.emit("message", message);
+      socket.emit("message", { uid: user?.uid, msg: message, ch });
     } else {
       console.log("Error connecting to server.");
     }
-    setMessages((prev) => [...prev, { username, content: message }]);
+    setMessages((prev) => {
+      if (prev[ch]) {
+        return {
+          ...prev,
+          [ch]: [...prev[ch], { uid: user?.uid, content: message }],
+        };
+      } else if (prev) {
+        return { ...prev, [ch]: [{ uid: user?.uid, content: message }] };
+      } else {
+        return { [ch]: [{ uid: user?.uid, content: message }] };
+      }
+    });
+
     setMessage("");
   };
 

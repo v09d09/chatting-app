@@ -1,3 +1,5 @@
+//BUG: message sent multiple times when user refresh..
+
 require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
@@ -15,55 +17,46 @@ const corsOptions = {
 const io = new Server(server, {
   cors: corsOptions,
 });
-const { addUser, removeUser, getUser } = require("./users");
+
+const User = require("./models/User");
+
 const authRouter = require("./routes/authRoutes");
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true })); // might not need
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/api/guest", authRouter);
 
-///////////////////////////////////////////////socket code
+///////////////////////////////////////////////////socket
 io.use((socket, next) => {
   if (!socket.handshake.headers.cookie) {
     next(new Error("not authed"));
   }
   const token = socket.handshake.headers.cookie.substring(6);
-  console.log("trying..");
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(user);
-    //check for user in USERS here................................................?
+    User.addUser(new User(user.uid, user.iat, user.exp));
     next();
   } catch (err) {
-    console.log(err.message);
     next(err);
   }
 });
-io.on("connection", (socket) => {
-  console.log(socket.id + " connected!");
 
-  socket.on("details", (userInfo) => {
-    addUser({ ...userInfo, sid: socket.id });
-    socket.join(userInfo.room); //??
+io.on("connection", (socket) => {
+  socket.on("joinRoom", ({ uid, channel }) => {
+    let user = User.findUser(uid);
+    let { currSid, prevRoom } = user.setSidToRoom(socket.id, channel);
+    if (prevRoom) socket.leave(prevRoom);
+    socket.join(currSid[1]);
+    console.log("FROM JOINROOM, ALL USERS:\n", User.getAllUsers());
   });
 
-  socket.on("message", (msg) => {
-    console.log(msg);
-    const user = getUser(socket.id);
-    console.log("GETUSEROUTPUT: ", user);
-    if (user) {
-      socket.broadcast
-        .to(user.room)
-        .emit("message", { content: msg, username: user.username });
-    } else {
-      console.log("Error user not found");
-    }
+  socket.on("message", ({ uid, msg, ch }) => {
+    socket.broadcast.to(ch).emit("message", { content: msg, uid });
   });
   socket.on("disconnect", (reason) => {
-    //check if all that user's sockets list is empty then delete, else delete just this socket's id from their list
-    console.log(reason);
-    removeUser(socket.id);
+    User.deleteSocket(socket.id);
+    console.log("FROM DISCONNECT, ALL USERS:\n", User.getAllUsers());
   });
 });
 
