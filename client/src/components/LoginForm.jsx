@@ -65,26 +65,26 @@ function LoginForm() {
   const headerMsg = user ? "change username!" : "login as guest!";
 
   return (
-    <Card className="border w-96 h-96 p-5 flex justify-between flex-col">
-      <h1 className="text-2xl font-bold mt-10">{headerMsg}</h1>
+    <Card className="flex h-96 w-96 flex-col justify-between border p-5">
+      <h1 className="mt-10 text-2xl font-bold">{headerMsg}</h1>
 
-      <form className="w-full mb-10" onSubmit={loginSubmitHandler}>
-        <label htmlFor="user-name" className="text-xl my-2 opacity-80">
+      <form className="mb-10 w-full" onSubmit={loginSubmitHandler}>
+        <label htmlFor="user-name" className="my-2 text-xl opacity-80">
           username
         </label>
         <input
           type="text"
-          className="block bg-transparent border w-5/6 h-16 px-4 mb-2"
+          className="mb-2 block h-16 w-5/6 border bg-transparent px-4"
           ref={inputRef}
         />
 
         {validUsername?.status === false && (
-          <p className="text-red-500 w-5/6 text-sm">{validUsername?.message}</p>
+          <p className="w-5/6 text-sm text-red-500">{validUsername?.message}</p>
         )}
 
         <button
           type="submit"
-          className="border mt-2 p-3 bg-white bg-opacity-20"
+          className="mt-2 border bg-white bg-opacity-20 p-3"
         >
           start chatting
         </button>

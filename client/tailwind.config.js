@@ -7,5 +7,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("prettier-plugin-tailwindcss"),
+    require("tailwind-scrollbar-hide"),
+  ],
 };

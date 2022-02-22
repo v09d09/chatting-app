@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 function ChannelsSideBar(props) {
   return (
     <div className={props.className}>
-      <div className="flex flex-col justify-center items-center py-3">
-        <h1 className="text-xl bold font-bold">chatting-app</h1>
+      <div className="flex flex-col items-center justify-center py-3">
+        <h1 className="bold text-xl font-bold">chatting-app</h1>
         <h2>
           <span className="text-gray-400">made-by: </span>
-          <span className="bg-gradient-to-r from-purple-400 to-orange-300 bg-clip-text text-transparent font-bold ">
+          <span className="bg-gradient-to-r from-purple-400 to-orange-300 bg-clip-text font-bold text-transparent ">
             voodoo
           </span>
         </h2>

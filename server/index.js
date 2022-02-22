@@ -48,7 +48,6 @@ io.on("connection", (socket) => {
     let { currSid, prevRoom } = user.setSidToRoom(socket.id, channel);
     if (prevRoom) socket.leave(prevRoom);
     socket.join(currSid[1]);
-    console.log("FROM JOINROOM, ALL USERS:\n", User.getAllUsers());
   });
 
   socket.on("message", ({ uid, msg, ch }) => {
@@ -56,7 +55,6 @@ io.on("connection", (socket) => {
   });
   socket.on("disconnect", (reason) => {
     User.deleteSocket(socket.id);
-    console.log("FROM DISCONNECT, ALL USERS:\n", User.getAllUsers());
   });
 });
 

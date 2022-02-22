@@ -31,16 +31,16 @@ function ChatBox({ ch }) {
     }
   }, [socket, ch, user]);
   return (
-    <div className=" bg-white bg-opacity-5 h-screen w-full relative ">
-      <div className=" h-12 w-full absolute top-0 p-4 border-b border-slate-500  font-bold text-lg">
+    <div className=" relative h-screen w-full bg-white bg-opacity-5 ">
+      <div className=" absolute top-0 h-12 w-full border-b border-slate-500 p-4  text-lg font-bold">
         #{ch}
       </div>
-      <div className=" absolute top-12 bottom-24 py-4  px-8 overflow-scroll scrollbar-hide">
+      <div className=" scrollbar-hide absolute top-12 bottom-24  overflow-scroll py-4 px-8">
         {messages[ch]?.map((msg, idx) => {
           return <ChatMsg key={idx} uid={msg.uid} message={msg.content} />;
         })}
       </div>
-      <div className=" absolute  h-24 w-full bottom-0 p-2 border-t border-slate-500 font-bold">
+      <div className=" absolute  bottom-0 h-24 w-full border-t border-slate-500 p-2 font-bold">
         <SendMsgForm setMessages={setMessages} ch={ch} />
       </div>
     </div>

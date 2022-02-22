@@ -31,9 +31,9 @@ function SendMsgForm({ setMessages, ch }) {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <form
-        className="w-full h-full flex justify-center items-center"
+        className="flex h-full w-full items-center justify-center"
         onSubmit={sendMsgHandler}
       >
         <input
@@ -41,12 +41,12 @@ function SendMsgForm({ setMessages, ch }) {
           placeholder="Send a Message..."
           onChange={(e) => setMessage(e.target.value)}
           value={message}
-          className="bg-transparent border  w-4/5 h-3/5 px-4"
+          className="h-3/5 w-4/5  border bg-transparent px-4"
         />
         <input
           type="submit"
           value="enter"
-          className="border mx-2 p-3 bg-white bg-opacity-20"
+          className="mx-2 border bg-white bg-opacity-20 p-3"
         />
       </form>
     </div>
