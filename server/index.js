@@ -1,5 +1,3 @@
-//BUG: message sent multiple times when user refresh..
-
 require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
@@ -51,7 +49,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", ({ uid, msg, ch }) => {
-    socket.broadcast.to(ch).emit("message", { content: msg, uid });
+    const timestamp = Date.now();
+    const { chatColor } = User.findUser(uid);
+    socket.broadcast
+      .to(ch)
+      .emit("message", { content: msg, uid, timestamp, chatColor });
   });
   socket.on("disconnect", (reason) => {
     User.deleteSocket(socket.id);

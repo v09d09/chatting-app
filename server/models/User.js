@@ -8,6 +8,7 @@ module.exports = class User {
     this.uid = uid;
     this.iat = iat;
     this.exp = exp;
+    this.chatColor = randColor();
   }
   getUser() {
     return this;
@@ -64,3 +65,15 @@ module.exports = class User {
     delete this.USERS[uid];
   }
 };
+
+function randColor() {
+  const colors = [
+    "#d63535",
+    "#d67535",
+    "#6bd635",
+    "#3553d6",
+    "#9b35d6",
+    "#d63575",
+  ];
+  return colors[Math.floor(Math.random() * 6)];
+}

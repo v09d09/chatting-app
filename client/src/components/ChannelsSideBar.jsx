@@ -1,30 +1,33 @@
 import { NavLink } from "react-router-dom";
+import ChannelLink from "./ChannelLink";
 
 function ChannelsSideBar(props) {
   return (
     <div className={props.className}>
       <div className="flex flex-col items-center justify-center py-3">
-        <h1 className="bold text-xl font-bold">chatting-app</h1>
+        <h1 className="bold text-3xl font-bold text-yellow-400">
+          chatting-app
+        </h1>
         <h2>
           <span className="text-gray-400">made-by: </span>
           <span className="bg-gradient-to-r from-purple-400 to-orange-300 bg-clip-text font-bold text-transparent ">
-            voodoo
+            Mohamed Hekal
           </span>
         </h2>
       </div>
-      <div className="px-4 py-2">
+      <div className="mt-4 border-t border-gray-400 pt-2">
         <ul>
           <li>
-            <NavLink to="/ch/general">general</NavLink>
+            <ChannelLink to="/ch/general" />
           </li>
           <li>
-            <NavLink to="/ch/gaming">gaming</NavLink>
+            <ChannelLink to="/ch/gaming" />
           </li>
           <li>
-            <NavLink to="/ch/cats">cats</NavLink>
+            <ChannelLink to="/ch/cats" />
           </li>
           <li>
-            <NavLink to="/ch/dev">dev</NavLink>
+            <ChannelLink to="/ch/dev" />
           </li>
         </ul>
       </div>

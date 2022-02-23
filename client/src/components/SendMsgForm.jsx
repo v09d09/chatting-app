@@ -14,16 +14,17 @@ function SendMsgForm({ setMessages, ch }) {
     } else {
       console.log("Error connecting to server.");
     }
+    const msg = { uid: user?.uid, content: message, timestamp: Date.now() };
     setMessages((prev) => {
       if (prev[ch]) {
         return {
           ...prev,
-          [ch]: [...prev[ch], { uid: user?.uid, content: message }],
+          [ch]: [...prev[ch], msg],
         };
       } else if (prev) {
-        return { ...prev, [ch]: [{ uid: user?.uid, content: message }] };
+        return { ...prev, [ch]: [msg] };
       } else {
-        return { [ch]: [{ uid: user?.uid, content: message }] };
+        return { [ch]: [msg] };
       }
     });
 

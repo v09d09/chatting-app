@@ -20,7 +20,7 @@ function LoginForm() {
   }, []);
 
   const usernameValidator = useCallback((username) => {
-    const reg = /^[a-z0-9_-]{4,25}$/;
+    const reg = /^[a-zA-Z0-9_-]{4,25}$/;
     return reg.test(username);
   }, []);
 

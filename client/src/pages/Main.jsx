@@ -20,10 +20,10 @@ function Main() {
   }, [user?.uid, navigate]);
 
   return (
-    <div className="flex h-screen ">
-      <ChannelsSideBar className="w-80" />
+    <div className="flex h-screen">
+      <ChannelsSideBar className="hidden w-80  lg:block " />
       <Outlet />
-      <div className="w-80"></div>
+      <div className="hidden w-80 lg:block"></div>
     </div>
   );
 }
