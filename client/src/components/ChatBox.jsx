@@ -3,6 +3,7 @@ import SendMsgForm from "./SendMsgForm";
 import { useSocket } from "../context/SocketProvider";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/authProvider";
+import ChatHeader from "./ChatHeader";
 
 function ChatBox({ ch }) {
   const [user] = useAuth();
@@ -47,10 +48,8 @@ function ChatBox({ ch }) {
     }
   }, [socket, ch, user]);
   return (
-    <div className=" bg-customTrans05 border-customLightOrange relative h-screen w-full border-r ">
-      <div className=" border-customLightOrange absolute top-0 flex h-16 w-full justify-end border-b p-4">
-        <h1 className="text-customOrange text-2xl font-bold italic">#{ch}</h1>
-      </div>
+    <div className=" bg-customTrans05 border-customLightOrange relative h-screen w-full overflow-hidden  border-r">
+      <ChatHeader ch={ch} />
       <div
         className=" scrollbar-hide absolute top-16 bottom-24 w-full  overflow-scroll "
         ref={messagesEl}

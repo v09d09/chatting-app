@@ -54,7 +54,7 @@ function SendMsgForm({ setMessages, ch }) {
         <input
           type="submit"
           value="enter"
-          className=" bg-customLightBlue border-customLightOrange text-customLightOrange hover:bg-customBlue h-3/5 w-1/5 border border-l-0 bg-opacity-20 px-4 text-xl "
+          className=" bg-customLightBlue border-customLightOrange text-customLightOrange hover:bg-customBlue h-3/5 w-1/5 border border-l-0 bg-opacity-20 text-xl lg:px-4 "
         />
       </form>
     </div>
