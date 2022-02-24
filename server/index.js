@@ -44,8 +44,13 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", ({ uid, channel }) => {
     let user = User.findUser(uid);
     let { currSid, prevRoom } = user.setSidToRoom(socket.id, channel);
-    if (prevRoom) socket.leave(prevRoom);
+    if (prevRoom) {
+      socket.broadcast.to(prevRoom).emit("userLeft", { user });
+      socket.leave(prevRoom);
+    }
     socket.join(currSid[1]);
+    socket.broadcast.to(currSid[1]).emit("userJoined", { user });
+    socket.emit("userList", User.getAllUsers());
   });
 
   socket.on("message", ({ uid, msg, ch }) => {
@@ -61,6 +66,13 @@ io.on("connection", (socket) => {
       .emit("message", { content: msg, uid, timestamp, chatColor });
   });
   socket.on("disconnect", (reason) => {
+    const user = User.findUserBySid(socket.id);
+    const sidToRoomArr = user?.getSidToRoom();
+    sidToRoomArr?.forEach((str) => {
+      if (str[0] === socket.id) {
+        socket.broadcast.to(str[1]).emit("userLeft", { user });
+      }
+    });
     User.deleteSocket(socket.id);
   });
 });

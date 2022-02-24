@@ -3,7 +3,7 @@ import ChannelLink from "./ChannelLink";
 function ChannelsSideBar(props) {
   return (
     <div className={`border-customLightOrange border-r ${props.className}`}>
-      <div className="flex flex-col items-center justify-center py-3">
+      <div className="flex h-24 flex-col items-center justify-evenly">
         <h1 className="bold text-3xl font-bold text-fuchsia-200">
           chatting-app
         </h1>
