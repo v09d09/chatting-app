@@ -14,9 +14,6 @@ export function SocketProvider({ children }) {
   const [user] = useAuth();
 
   useEffect(() => {
-    // const socketOptions = { //THIS WORKS
-    //   auth: { token: user?.token },
-    // };
     const socketOptions = { withCredentials: true };
     const newSocket = io(CONNECTION_STRING, socketOptions);
     setSocket(newSocket);

@@ -9,10 +9,10 @@ function ChatMsg({ uid, message, timestamp, color, idx }) {
     setIsExpanded(!isExpanded);
   };
   const smMessage = (
-    <div className="py-1">
+    <div className="py-2 px-8 ">
       <span
         style={{
-          color: color || "red",
+          color: color || "#e9c3db",
         }}
       >
         {username[0]}
@@ -22,10 +22,10 @@ function ChatMsg({ uid, message, timestamp, color, idx }) {
     </div>
   );
   const lgMessage = (
-    <div className=" bg-slate-800 p-2">
+    <div className=" border-customLightBlue w-full border-y bg-[rgb(0,0,0,0.2)]  py-2 px-8 ">
       <span
         style={{
-          color: color || "red",
+          color: color || "#e9c3db",
         }}
       >
         {username[0]}
@@ -34,7 +34,7 @@ function ChatMsg({ uid, message, timestamp, color, idx }) {
       {": "}
       <div className=" flex justify-between">
         <p className="inline overflow-hidden text-ellipsis">{message}</p>
-        <div className="flex flex-col text-xs text-gray-400">
+        <div className="flex flex-col items-center text-xs text-gray-400">
           <span>{formattedTS.split("-")[0]}</span>
           <span>{formattedTS.split("-")[1]}</span>
         </div>
@@ -46,7 +46,8 @@ function ChatMsg({ uid, message, timestamp, color, idx }) {
     <div
       className="w-full text-lg"
       style={{
-        background: idx % 2 === 0 ? "tansparent" : "rgb(71,107,107,0.08)",
+        background: idx % 2 === 0 ? "tansparent" : "rgb(255,255,255,0.1)",
+        borderLeft: `2px solid ${color || "#e9c3db"}`,
       }}
       onClick={expandHandler}
     >

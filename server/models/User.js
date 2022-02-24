@@ -67,13 +67,6 @@ module.exports = class User {
 };
 
 function randColor() {
-  const colors = [
-    "#d63535",
-    "#d67535",
-    "#6bd635",
-    "#3553d6",
-    "#9b35d6",
-    "#d63575",
-  ];
-  return colors[Math.floor(Math.random() * 6)];
+  const colors = ["#ff206e", "#fbff12", "#41ead4", "#e63946", "#a94dda"];
+  return colors[Math.floor(Math.random() * 5)];
 }

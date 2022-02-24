@@ -1,11 +1,10 @@
-import { NavLink } from "react-router-dom";
 import ChannelLink from "./ChannelLink";
 
 function ChannelsSideBar(props) {
   return (
-    <div className={props.className}>
+    <div className={`border-customLightOrange border-r ${props.className}`}>
       <div className="flex flex-col items-center justify-center py-3">
-        <h1 className="bold text-3xl font-bold text-yellow-400">
+        <h1 className="bold text-3xl font-bold text-fuchsia-200">
           chatting-app
         </h1>
         <h2>
@@ -15,7 +14,7 @@ function ChannelsSideBar(props) {
           </span>
         </h2>
       </div>
-      <div className="mt-4 border-t border-gray-400 pt-2">
+      <div className="border-customLightOrange mt-4 border-t pt-2">
         <ul>
           <li>
             <ChannelLink to="/ch/general" />

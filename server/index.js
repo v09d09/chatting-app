@@ -49,6 +49,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", ({ uid, msg, ch }) => {
+    // const users = User.getAllUsers(); //for debug
+    // const output = Object.keys(users).map(
+    //   (key) => `${users[key].uid}: ${users[key].sidToRoom}`
+    // ); //for debug
+    // console.log(output); //for debug
     const timestamp = Date.now();
     const { chatColor } = User.findUser(uid);
     socket.broadcast

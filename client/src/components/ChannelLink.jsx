@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 function ChannelLink({ to }) {
   const activeHandler = (navData) =>
-    navData.isActive ? "text-yellow-400" : "";
+    navData.isActive ? "text-cutsomYellow bg-customTrans2" : "";
   return (
     <NavLink to={to} className={activeHandler}>
-      <div className="my-2 border-l border-gray-400 p-2 text-xl">
+      <div className="border-customLightOrange my-2 border-l bg-inherit p-2 text-xl">
         {to.split("/")[2]}
       </div>
     </NavLink>

@@ -29,6 +29,7 @@ function ChatBox({ ch }) {
 
   useEffect(() => {
     if (socket) {
+      socket.on("connect", () => console.log("connected successfully."));
       socket.emit("joinRoom", { uid: user?.uid, channel: ch });
       socket.on("message", (msg) => {
         setMessages((prev) => {
@@ -42,16 +43,16 @@ function ChatBox({ ch }) {
         });
       });
     } else {
-      console.log("Error connecting to server.");
+      console.log("connecting to ws...");
     }
   }, [socket, ch, user]);
   return (
-    <div className=" relative h-screen w-full bg-white  bg-opacity-5 ">
-      <div className=" absolute top-0 h-16 w-full border-b border-slate-500 p-4  text-2xl font-bold">
-        #{ch}
+    <div className=" bg-customTrans05 border-customLightOrange relative h-screen w-full border-r ">
+      <div className=" border-customLightOrange absolute top-0 flex h-16 w-full justify-end border-b p-4">
+        <h1 className="text-customOrange text-2xl font-bold italic">#{ch}</h1>
       </div>
       <div
-        className=" scrollbar-hide absolute top-16 bottom-24 w-full  overflow-scroll py-4 px-8"
+        className=" scrollbar-hide absolute top-16 bottom-24 w-full  overflow-scroll "
         ref={messagesEl}
       >
         {messages[ch]?.map((msg, idx) => {
@@ -67,7 +68,7 @@ function ChatBox({ ch }) {
           );
         })}
       </div>
-      <div className=" absolute  bottom-0 h-24 w-full border-t border-slate-500 p-2 font-bold">
+      <div className=" border-customLightOrange  absolute bottom-0 h-24 w-full border-t p-2 font-bold">
         <SendMsgForm setMessages={setMessages} ch={ch} />
       </div>
     </div>

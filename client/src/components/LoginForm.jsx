@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authProvider";
-import Card from "./Card";
 
 const serverUrl = "http://localhost:8000";
 
@@ -10,7 +9,7 @@ const CHAR_BOUNDRIES_ERROR = {
   message: "username has to be (4-25) characters & only contain (- _) symbols",
 };
 function LoginForm() {
-  const [user, setUser] = useAuth();
+  const [_, setUser] = useAuth();
   const [validUsername, setValidUsername] = useState(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -28,12 +27,6 @@ function LoginForm() {
     e.preventDefault();
     const isValid = usernameValidator(inputRef.current.value);
     setValidUsername(() => (isValid ? { status: true } : CHAR_BOUNDRIES_ERROR));
-
-    console.log(
-      inputRef.current.value,
-      "hittin: ",
-      serverUrl + "/api/auth/login"
-    );
     if (isValid) {
       const res = await fetch(serverUrl + "/api/guest/login", {
         method: "POST",
@@ -62,19 +55,22 @@ function LoginForm() {
     }
   };
 
-  const headerMsg = user ? "change username!" : "login as guest!";
-
   return (
-    <Card className="flex h-96 w-96 flex-col justify-between border p-5">
-      <h1 className="mt-10 text-2xl font-bold">{headerMsg}</h1>
+    <div className="border-customLightOrange bg-customTrans05 flex h-96 w-96 flex-col items-center justify-between border p-5">
+      <h1 className="text-cutsomYellow mt-10 text-4xl font-bold">
+        login as guest!
+      </h1>
 
-      <form className="mb-10 w-full" onSubmit={loginSubmitHandler}>
-        <label htmlFor="user-name" className="my-2 text-xl opacity-80">
+      <form
+        className="mb-10 flex w-full flex-col items-center"
+        onSubmit={loginSubmitHandler}
+      >
+        <label htmlFor="user-name" className="my-2 text-2xl">
           username
         </label>
         <input
           type="text"
-          className="mb-2 block h-16 w-5/6 border bg-transparent px-4"
+          className="bg-customTrans1 focus:bg-customTrans05 border-customLightOrange focus:border-customLightBlue mb-2 block h-16 w-5/6 border px-4 outline-none focus:border"
           ref={inputRef}
         />
 
@@ -84,12 +80,12 @@ function LoginForm() {
 
         <button
           type="submit"
-          className="mt-2 border bg-white bg-opacity-20 p-3"
+          className="bg-customTrans05 border-customLightOrange  text-customLightOrange hover:bg-customBlue hover:border-customLightBlue mt-4 w-5/6 border p-3"
         >
           start chatting
         </button>
       </form>
-    </Card>
+    </div>
   );
 }
 
