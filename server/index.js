@@ -9,7 +9,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.URL || "http://localhost:3000",
   credentials: true,
 };
 const io = new Server(server, {
@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/api/guest", authRouter);
 
-///////////////////////////////////////////////////socket
 io.use((socket, next) => {
   if (!socket.handshake.headers.cookie) {
     next(new Error("not authed"));
@@ -77,7 +76,6 @@ io.on("connection", (socket) => {
   });
 });
 
-///////////////////////////////////////////////////server listening
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
   console.log(`Server up and running on port: ${PORT}...`);

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ChannelsList from "./ChannelsList";
-import UserListSideBar from "./UserListSideBar";
 import UsersList from "./UsersList";
 
 function ChatHeader({ ch }) {

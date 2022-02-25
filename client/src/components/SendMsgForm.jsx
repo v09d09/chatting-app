@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
+import Picker from "emoji-picker-react";
 import { useAuth } from "../context/authProvider";
 import { useSocket } from "../context/SocketProvider";
 
@@ -6,6 +7,7 @@ function SendMsgForm({ setMessages, ch }) {
   const socket = useSocket();
   const [user] = useAuth();
   const [message, setMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -37,6 +39,13 @@ function SendMsgForm({ setMessages, ch }) {
     setMessage("");
   };
 
+  const emojiHandler = (e, { emoji }) => {
+    setMessage((prev) => prev + ` ${emoji} `);
+  };
+  const showEmojiHandler = (e) => {
+    setShowEmojiPicker((prev) => !prev);
+  };
+
   return (
     <div className="h-full w-full">
       <form
@@ -51,6 +60,29 @@ function SendMsgForm({ setMessages, ch }) {
           ref={inputRef}
           className="bg-customTrans1 focus:bg-customTrans05 border-customLightOrange focus:border-customLightBlue h-3/5 w-4/5 border border-r-0 px-4 outline-none focus:border focus:border-r-0"
         />
+        <input
+          type="button"
+          value="😀"
+          onClick={showEmojiHandler}
+          className="bg-customTrans1  border-customLightOrange  h-3/5 border border-x-0 px-4 outline-none "
+        />
+        <div className="relative">
+          {showEmojiPicker && (
+            <Picker
+              onEmojiClick={emojiHandler}
+              disableSearchBar={true}
+              preload={true}
+              className="bg-black"
+              pickerStyle={{
+                position: "absolute",
+                bottom: "20px",
+                right: "0",
+                boxShadow: "none",
+                border: "none",
+              }}
+            />
+          )}
+        </div>
         <input
           type="submit"
           value="enter"

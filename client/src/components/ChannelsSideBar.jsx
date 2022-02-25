@@ -1,4 +1,3 @@
-import ChannelLink from "./ChannelLink";
 import ChannelsList from "./ChannelsList";
 
 function ChannelsSideBar(props) {
