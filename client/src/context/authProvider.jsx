@@ -10,7 +10,7 @@ export const AuthState = ({ children }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const fetchUserData = async () => {
-      const res = await fetch("http://localhost:8000/api/guest/", {
+      const res = await fetch("/api/guest/", {
         credentials: "include",
       });
       const resJson = await res.json();

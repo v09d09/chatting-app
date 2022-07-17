@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
@@ -19,6 +20,9 @@ const io = new Server(server, {
 const User = require("./models/User");
 
 const authRouter = require("./routes/authRoutes");
+
+app.use(express.static(path.join(__dirname, "build")));
+
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -75,8 +79,52 @@ io.on("connection", (socket) => {
     User.deleteSocket(socket.id);
   });
 });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
   console.log(`Server up and running on port: ${PORT}...`);
 });
+
+// ---------------- handle sigs
+
+setInterval(
+  () =>
+    server.getConnections((err, connections) =>
+      console.log(`${connections} connections currently open`)
+    ),
+  1000
+);
+
+process.on("SIGTERM", shutDown);
+process.on("SIGINT", shutDown);
+
+let connections = [];
+
+server.on("connection", (connection) => {
+  connections.push(connection);
+  connection.on(
+    "close",
+    () => (connections = connections.filter((curr) => curr !== connection))
+  );
+});
+
+function shutDown() {
+  console.log("Received kill signal, shutting down gracefully");
+  server.close(() => {
+    console.log("Closed out remaining connections");
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    console.error(
+      "Could not close connections in time, forcefully shutting down"
+    );
+    process.exit(1);
+  }, 10000);
+
+  connections.forEach((curr) => curr.end());
+  setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
+}
