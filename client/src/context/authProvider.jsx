@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export const AuthContext = createContext(null);
 
@@ -7,21 +8,33 @@ export const useAuth = () => {
 };
 
 export const AuthState = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ data: null, isLoading: true });
+  const [token, _] = useLocalStorage("access_token", "");
+
   useEffect(() => {
     const fetchUserData = async () => {
-      const res = await fetch("/api/guest/", {
-        credentials: "include",
-      });
-      const resJson = await res.json();
-      if (resJson.status === "success") {
-        setUser({ uid: resJson.user.uid, token: resJson.token });
-      } else {
-        setUser({ status: "not logged in" });
+      let headers;
+      if (token)
+        headers = {
+          Authorization: "Bearer " + token,
+        };
+      try {
+        const res = await fetch("/api/users", {
+          headers,
+        });
+        const resJson = await res.json();
+        if (resJson.user) {
+          setUser({ data: resJson.user, isLoading: false });
+        } else {
+          setUser({ data: null, isLoading: false });
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
+
     fetchUserData();
-  }, [setUser]);
+  }, [setUser, token]);
   return (
     <AuthContext.Provider value={[user, setUser]}>
       {children}

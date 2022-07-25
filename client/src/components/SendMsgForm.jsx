@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import Picker from "emoji-picker-react";
 import { useAuth } from "../context/authProvider";
-import { useSocket } from "../context/SocketProvider";
+import useChatRoom from "../hooks/useChatRoom";
+// import { useSocket } from "../context/SocketProvider";
 
-function SendMsgForm({ setMessages, ch }) {
-  const socket = useSocket();
+function SendMsgForm({ ch, sendMessage }) {
   const [user] = useAuth();
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -17,25 +17,8 @@ function SendMsgForm({ setMessages, ch }) {
   const sendMsgHandler = (e) => {
     e.preventDefault();
     if (!message) return;
-    if (socket) {
-      socket.emit("message", { uid: user?.uid, msg: message, ch });
-    } else {
-      console.log("Error connecting to server.");
-    }
-    const msg = { uid: user?.uid, content: message, timestamp: Date.now() };
-    setMessages((prev) => {
-      if (prev[ch]) {
-        return {
-          ...prev,
-          [ch]: [...prev[ch], msg],
-        };
-      } else if (prev) {
-        return { ...prev, [ch]: [msg] };
-      } else {
-        return { [ch]: [msg] };
-      }
-    });
 
+    sendMessage({ messageBody: message, roomName: ch });
     setMessage("");
   };
 
@@ -58,13 +41,13 @@ function SendMsgForm({ setMessages, ch }) {
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           ref={inputRef}
-          className="bg-customTrans1 focus:bg-customTrans05 border-customLightOrange focus:border-customLightBlue h-3/5 w-4/5 border border-r-0 px-4 outline-none focus:border focus:border-r-0"
+          className="h-3/5 w-4/5 border border-r-0 border-customLightOrange bg-customTrans1 px-4 outline-none focus:border focus:border-r-0 focus:border-customLightBlue focus:bg-customTrans05"
         />
         <input
           type="button"
           value="😀"
           onClick={showEmojiHandler}
-          className="bg-customTrans1  border-customLightOrange  h-3/5 border border-x-0 px-4 outline-none "
+          className="h-3/5  border  border-x-0 border-customLightOrange bg-customTrans1 px-4 outline-none "
         />
         <div className="relative">
           {showEmojiPicker && (
@@ -86,7 +69,7 @@ function SendMsgForm({ setMessages, ch }) {
         <input
           type="submit"
           value="enter"
-          className=" bg-customLightBlue border-customLightOrange text-customLightOrange hover:bg-customBlue h-3/5 w-1/5 border border-l-0 bg-opacity-20 text-xl lg:px-4 "
+          className=" h-3/5 w-1/5 border border-l-0 border-customLightOrange bg-customLightBlue bg-opacity-20 text-xl text-customLightOrange hover:bg-customBlue lg:px-4 "
         />
       </form>
     </div>

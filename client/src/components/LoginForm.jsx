@@ -1,39 +1,34 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authProvider";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-// const serverUrl = "http://localhost:8000";
-
-const CHAR_BOUNDRIES_ERROR = {
+const GENERIC_ERROR = {
   status: false,
-  message: "username has to be (4-25) characters & only contain (- _) symbols",
+  message: "Incorrect username or password.",
 };
+
 function LoginForm() {
   const [_, setUser] = useAuth();
-  const [validUsername, setValidUsername] = useState(null);
-  const inputRef = useRef(null);
+  const [_2, setToken] = useLocalStorage("access_token");
+  const [validCred, setValidCred] = useState(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const id = useId();
   const navigate = useNavigate();
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
-  const usernameValidator = useCallback((username) => {
-    const reg = /^[a-zA-Z0-9_-]{4,25}$/;
-    return reg.test(username);
+    usernameRef.current.focus();
   }, []);
 
   const loginSubmitHandler = async (e) => {
     e.preventDefault();
-    const isValid = usernameValidator(inputRef.current.value);
-    setValidUsername(() => (isValid ? { status: true } : CHAR_BOUNDRIES_ERROR));
-    if (isValid) {
-      const res = await fetch("/api/guest/login", {
+    try {
+      const res = await fetch("/api/users/login", {
         method: "POST",
-        // mode: "cors",
-        credentials: "include", //because server is hosted on another url
         body: JSON.stringify({
-          username: inputRef.current.value,
+          username: usernameRef.current.value.trim(),
+          password: passwordRef.current.value,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -41,50 +36,77 @@ function LoginForm() {
         },
       });
       const resJson = await res.json();
-
-      if (res.status === 201) {
-        setUser({ uid: resJson.uid, token: resJson.token });
-      } else {
-        setValidUsername({
-          status: false,
-          message: resJson.message || "Server error..",
-        });
+      console.log(res);
+      if (res.status >= 500) {
+        setValidCred({ status: false, message: "Server error." });
       }
-      inputRef.current.value = "";
-      navigate("/ch/general", { replace: true });
+      if (res.status !== 200) {
+        setValidCred(GENERIC_ERROR);
+      }
+      if (resJson.token) {
+        console.log(resJson);
+        setValidCred({ status: true, message: "success" });
+        setToken(resJson.token);
+
+        setUser({
+          data: {
+            token: resJson.token,
+            username: usernameRef.current.value.trim(),
+          },
+        });
+        navigate("/", { replace: true });
+      }
+
+      passwordRef.current.value = "";
+      // navigate("/ch/general", { replace: true });
+    } catch (error) {
+      setValidCred(GENERIC_ERROR);
+      console.error(error);
     }
   };
 
+  const inputStyle =
+    "border-customLightOrange bg-customTrans1 focus:border-customLightBlue focus:bg-customTrans05 mb-2 block h-10 w-5/6 border px-4 outline-none focus:border";
+
   return (
-    <div className="flex h-96 w-96 flex-col items-center justify-between border border-customLightOrange bg-customTrans05 p-5">
-      <h1 className="mt-10 text-4xl font-bold text-cutsomYellow">
-        login as guest!
-      </h1>
+    <div className="flex w-96 flex-col  items-center justify-between border border-customLightOrange bg-customTrans05  px-5 py-3">
+      <h1 className="mt-10 mb-6 text-4xl font-bold text-cutsomYellow">login</h1>
 
       <form
         className="mb-10 flex w-full flex-col items-center"
         onSubmit={loginSubmitHandler}
       >
-        <label htmlFor="user-name" className="my-2 text-2xl">
+        <label htmlFor={"username-" + id} className="my-2 text-2xl">
           username
         </label>
         <input
           type="text"
-          className="mb-2 block h-16 w-5/6 border border-customLightOrange bg-customTrans1 px-4 outline-none focus:border focus:border-customLightBlue focus:bg-customTrans05"
-          ref={inputRef}
+          id={"username-" + id}
+          className={inputStyle}
+          ref={usernameRef}
         />
-
-        {validUsername?.status === false && (
-          <p className="w-5/6 text-sm text-red-500">{validUsername?.message}</p>
-        )}
+        <label htmlFor={"password-" + id} className="my-2 text-2xl">
+          password
+        </label>
+        <input
+          type="password"
+          id={"password-" + id}
+          className={inputStyle}
+          ref={passwordRef}
+        />
 
         <button
           type="submit"
-          className="mt-4 w-5/6  border border-customLightOrange bg-customTrans05 p-3 text-customLightOrange hover:border-customLightBlue hover:bg-customBlue"
+          className="mt-10 w-5/6  border border-customLightOrange bg-customTrans05 p-3 text-customLightOrange hover:border-customLightBlue hover:bg-customBlue"
         >
           start chatting
         </button>
       </form>
+      {validCred?.status === false && (
+        <p className="text-md w-5/6 py-3 font-semibold text-red-500">
+          {validCred?.message}
+        </p>
+      )}
     </div>
   );
 }
